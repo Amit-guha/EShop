@@ -89,7 +89,21 @@ class ProductAdapter2(
 
                 }
 
-
+                addbutton.setOnClickListener {
+                    /*   addbutton.setText("Already in Cart")
+                       addbutton.isEnabled = false
+                       addbutton.setTextColor(resources.getColor(R.color.white))
+                       addbutton.setBackgroundColor(resources.getColor(R.color.black2))
+   */
+                    Toast.makeText(context,"${name.text.toString()} to cart",Toast.LENGTH_SHORT).show()
+                    val intent = Intent("custom-message");
+                    //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
+                    intent.putExtra("name", name.text.toString());
+                    intent.putExtra("price", totalprice.text.toString())
+                    intent.putExtra("Imgeurl", postProductsItem.imageUrl.toString())
+                    intent.putExtra("totalquantity",tvshow.text.toString())
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+                }
 
 
             }

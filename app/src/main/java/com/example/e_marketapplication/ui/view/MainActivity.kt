@@ -1,8 +1,13 @@
 package com.example.e_marketapplication.ui.view
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
@@ -10,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.e_marketapplication.R
@@ -39,6 +45,9 @@ class MainActivity : AppCompatActivity() {
     val list = arrayListOf<PostProductsItem>()
     val listquantity = ArrayList<String>()
 
+    //Submit button to next Acitivity
+    private lateinit var tv: TextView
+    private lateinit var btnsubmit: Button
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,8 +69,73 @@ class MainActivity : AppCompatActivity() {
         SetupFirstAPICall()
         SetupRecylerview()
         SetupSecondAPICall()
+        SetuPmessageReceiver()
+
+
 
     }
+
+    private fun SetuPmessageReceiver() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            mMessageReceiver,
+            IntentFilter("custom-message")
+        )
+
+    }
+
+
+        val mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent) {
+                // Get extra data included in the Intent
+                val ItemName = intent.getStringExtra("name")
+                val ItemPrice = intent.getStringExtra("price")
+                val imgaurl = intent.getStringExtra("Imgeurl")
+                val qty = intent.getStringExtra("totalquantity")
+
+                //list for store name,priece,imagurl
+                list.add(
+                    PostProductsItem(
+                        imgaurl.toString(),
+                        ItemName.toString(),
+                        ItemPrice!!.toInt()
+                    )
+                )
+
+                //list for store quantity
+                listquantity.add(qty.toString())
+                // Toast.makeText(this@MainActivity, "$list", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(this@MainActivity, "$totalprice", Toast.LENGTH_SHORT).show()
+
+                    // ButtonHandleClick()
+
+                btnsubmit.setOnClickListener {
+                    if (list.isEmpty()) {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Please Select Any Product First",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        val intent = Intent(this@MainActivity, ProductShow::class.java)
+                        //intent.putExtra("name",ItemName);
+                        // intent.putExtra("price",ItemPrice);
+                        //intent.putExtra("quantity",qty);
+                        intent.putExtra("extra", list)
+                        intent.putExtra("totalquantity", listquantity)
+                        startActivity(intent)
+
+                        list.clear()
+                        listquantity.clear()
+                    }
+
+                }
+
+
+            }
+        }
+
+
+
 
     private fun SetupRecylerview() {
         recyclerView = findViewById(R.id.recycler_item)
@@ -163,13 +237,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun SetupUI() {
         //find the id---->Storeinfo
         tvname = findViewById(R.id.tv_name)
         tvopening = findViewById(R.id.tv_opening)
         tvClosing = findViewById(R.id.tv_closing)
         ratingBar = findViewById(R.id.ratingbar)
+        tv = findViewById(R.id.tv_set)
+        btnsubmit = findViewById(R.id.btnnext)
     }
 
 
