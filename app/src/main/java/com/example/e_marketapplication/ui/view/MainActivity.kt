@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.e_marketapplication.R
 import com.example.e_marketapplication.data.repository.MainRepository
 import com.example.emartket.ui.viewmodel.MainViewModel
 import com.example.emartket.ui.viewmodel.MainViewModelFactory
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var ratingBar: RatingBar
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,6 +45,79 @@ class MainActivity : AppCompatActivity() {
 
         SetupUI()
         SetuPViewModel()
+        SetupFirstAPICall()
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun SetupFirstAPICall() {
+        viewModel.getstrore()
+        viewModel.myResponse.observe(this, Observer { response ->
+            // Log.d("Mainactivity", response.body()?.name.toString())
+
+            if (response.isSuccessful) {
+                tvname.text = response.body()?.name
+                ratingBar.stepSize = 0.01f
+                ratingBar.rating = response.body()?.rating?.toFloat()!!
+
+                val open: String = response.body()?.openingTime.toString()
+                val Opentime = open
+
+                val close: String = response.body()?.closingTime.toString()
+                val clostime = close
+
+                //Opening Time
+                //15:01:01.772Z --> Remove last 5 digit (https://c8d92d0a-6233-4ef7-a229-5a91deb91ea1.mock.pstmn.io/storeInfo)
+                if (Opentime.contains("Z")) {
+                    val result = Opentime.dropLast(5)
+                    val result2 =
+                        LocalTime.parse(result).format(DateTimeFormatter.ofPattern("h:mma"))
+                    tvopening.setText(result2.toString())
+
+                    //https://virtserver.swaggerhub.com/m-tul/opn-mobile-challenge-api/1.0.0/storeinfo
+                } else {
+                    val result =
+                        LocalTime.parse(Opentime).format(DateTimeFormatter.ofPattern("h:mma"))
+                    tvopening.text = result
+                }
+
+
+                //Closing Time
+                //15:01:01.772Z --> Remove last 5 digit (https://c8d92d0a-6233-4ef7-a229-5a91deb91ea1.mock.pstmn.io/storeInfo)
+                if (clostime.contains("Z")) {
+                    val result = clostime.dropLast(5)
+                    val result2 =
+                        LocalTime.parse(result).format(DateTimeFormatter.ofPattern("h:mma"))
+                    tvClosing.setText(result2.toString())
+
+                    //https://virtserver.swaggerhub.com/m-tul/opn-mobile-challenge-api/1.0.0/storeinfo
+                } else {
+                    val result =
+                        LocalTime.parse(clostime).format(DateTimeFormatter.ofPattern("h:mma"))
+                    tvClosing.text = result
+                }
+
+
+                /*   val open: String= response.body()?.openingTime.toString()
+                   val time = open
+
+
+                   val result = LocalTime.parse(time).format(DateTimeFormatter.ofPattern("h:mma"))
+                   tvopening.text=result
+
+                   val result1 = LocalTime.parse(response.body()?.closingTime.toString()).format(DateTimeFormatter.ofPattern("h:mma"))
+                   tvClosing.text=result1*/
+
+                /*  val localTime: LocalTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    LocalTime.now()
+                } else {
+                    TODO("VERSION.SDK_INT < O")
+                }
+                val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
+                println(localTime.format(dateTimeFormatter))
+                */
+            }
+        })
 
     }
 
