@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
@@ -71,7 +72,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun SetupSecondAPICall() {
-
+        viewModel.getProduct()
+        viewModel.myProducts.observe(this, { res ->
+            if (res.isSuccessful) {
+                res.body()?.let {
+                    productAdapter2.setData(it)
+                }
+            } else {
+                Toast.makeText(this, "${res.message().toString()}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
