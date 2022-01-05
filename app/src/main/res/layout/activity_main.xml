@@ -8,7 +8,7 @@
     tools:context=".ui.view.MainActivity">
 
 
-
+<!--Adding Toolbar-->
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
