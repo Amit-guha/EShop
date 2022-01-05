@@ -169,13 +169,18 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center">
 
                 <Button
                     android:id="@+id/btnnext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="submit"
+                    android:text="Submit"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center"
+                    android:textColorHint="@color/white"
                     android:gravity="center"/>
             </LinearLayout>
 

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EmarketApplication">
         <activity
+            android:name=".ui.view.SuccessfulScreen"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.ProductShow"
             android:exported="false" />
         <activity

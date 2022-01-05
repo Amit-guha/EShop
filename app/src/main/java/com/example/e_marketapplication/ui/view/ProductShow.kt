@@ -1,5 +1,6 @@
 package com.example.e_marketapplication.ui.view
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -58,8 +59,10 @@ class ProductShow : AppCompatActivity() {
     private fun SetupToolbar() {
         //Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
         toolbar.setTitleTextColor(resources.getColor(R.color.white))
+        toolbar.setTitle("Order summary screen")
+        setSupportActionBar(toolbar)
+
     }
 
     private fun SetupIntent() {
@@ -77,6 +80,9 @@ class ProductShow : AppCompatActivity() {
 
 
         btnSubmit.setOnClickListener {
+            val intent = Intent(this,SuccessfulScreen::class.java)
+            startActivity(intent)
+
             progressbar.setVisibility(View.VISIBLE);
             try {
                 viewModelSecond.pushPost(postItem)
@@ -105,7 +111,6 @@ class ProductShow : AppCompatActivity() {
                 //If any exception happened
                 Toast.makeText(this, "Exception : ${e.message}", Toast.LENGTH_SHORT).show()
             }
-
 
 
         }

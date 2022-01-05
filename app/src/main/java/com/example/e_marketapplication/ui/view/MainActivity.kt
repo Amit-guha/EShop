@@ -206,25 +206,6 @@ class MainActivity : AppCompatActivity() {
                     tvClosing.text = result
                 }
 
-
-                /*   val open: String= response.body()?.openingTime.toString()
-                   val time = open
-
-
-                   val result = LocalTime.parse(time).format(DateTimeFormatter.ofPattern("h:mma"))
-                   tvopening.text=result
-
-                   val result1 = LocalTime.parse(response.body()?.closingTime.toString()).format(DateTimeFormatter.ofPattern("h:mma"))
-                   tvClosing.text=result1*/
-
-                /*  val localTime: LocalTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    LocalTime.now()
-                } else {
-                    TODO("VERSION.SDK_INT < O")
-                }
-                val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
-                println(localTime.format(dateTimeFormatter))
-                */
             }
         })
 
@@ -245,6 +226,7 @@ class MainActivity : AppCompatActivity() {
         ratingBar = findViewById(R.id.ratingbar)
         tv = findViewById(R.id.tv_set)
         btnsubmit = findViewById(R.id.btnnext)
+        btnsubmit.setBackgroundColor(resources.getColor(R.color.black2))
     }
 
 
