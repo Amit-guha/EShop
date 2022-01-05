@@ -8,6 +8,14 @@ import retrofit2.http.*
 
 interface ApiService {
     @GET("storeInfo")
-    suspend fun getStore() : Response<PostStoreInfo>
+    suspend fun getStore(): Response<PostStoreInfo>
 
+    @GET("products")
+    suspend fun getProduct(): Response<List<PostProductsItem>>
+
+    @POST("order")
+    @Headers("Content-Type: application/json")
+    suspend fun pushPost(
+        @Body postitem: PostItem
+    ): Response<PostItem>
 }

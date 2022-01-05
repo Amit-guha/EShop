@@ -13,5 +13,13 @@ class MainRepository {
         return RetrofitBuilder.apiService.getStore()
     }
 
+    suspend fun getProduct() : Response<List<PostProductsItem>>{
+        return RetrofitBuilder.apiService.getProduct()
+    }
+
+    suspend fun pushPost(postItem: PostItem) : Response<PostItem>{
+        return RetrofitBuilder.apiService.pushPost(postItem)
+    }
+
 
 }

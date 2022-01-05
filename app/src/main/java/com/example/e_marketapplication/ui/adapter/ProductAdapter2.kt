@@ -1,4 +1,4 @@
-package com.example.emartket.ui.adapter
+package com.example.e_marketapplication.ui.adapter
 
 import android.content.Intent
 import android.util.Log
@@ -9,9 +9,8 @@ import android.widget.*
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.emartket.R
+import com.example.e_marketapplication.R
 import com.example.emartket.data.model.PostProductsItem
-import com.example.emartket.ui.view.MainActivity
 import kotlin.collections.ArrayList
 
 class ProductAdapter2(
@@ -90,21 +89,7 @@ class ProductAdapter2(
 
                 }
 
-                addbutton.setOnClickListener {
-                 /*   addbutton.setText("Already in Cart")
-                    addbutton.isEnabled = false
-                    addbutton.setTextColor(resources.getColor(R.color.white))
-                    addbutton.setBackgroundColor(resources.getColor(R.color.black2))
-*/
-                    Toast.makeText(context,"${name.text.toString()} to cart",Toast.LENGTH_SHORT).show()
-                    val intent = Intent("custom-message");
-                    //            intent.putExtra("quantity",Integer.parseInt(quantity.getText().toString()));
-                    intent.putExtra("name", name.text.toString());
-                    intent.putExtra("price", totalprice.text.toString())
-                    intent.putExtra("Imgeurl", postProductsItem.imageUrl.toString())
-                    intent.putExtra("totalquantity",tvshow.text.toString())
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
-                }
+
 
 
             }
@@ -114,7 +99,6 @@ class ProductAdapter2(
                Log.d("anything",name.text.toString())
                listener.cardLisitiner(intent)
    */
-
 
         }
 

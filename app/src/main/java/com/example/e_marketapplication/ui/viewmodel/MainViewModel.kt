@@ -17,11 +17,27 @@ import retrofit2.Response
 class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
     val myResponse : MutableLiveData<Response<PostStoreInfo>> = MutableLiveData()
+    val myProducts : MutableLiveData<Response<List<PostProductsItem>>> = MutableLiveData()
+    val myResponse3 : MutableLiveData<Response<PostItem>> = MutableLiveData()
 
     fun getstrore(){
         viewModelScope.launch {
             val response = repository.getStore()
             myResponse.value = response
+        }
+    }
+
+    fun getProduct(){
+        viewModelScope.launch {
+            val response2 = repository.getProduct()
+            myProducts.value= response2
+        }
+    }
+
+    fun pushPost(postItem: PostItem){
+        viewModelScope.launch {
+            val response3 = repository.pushPost(postItem)
+            myResponse3.value = response3
         }
     }
 

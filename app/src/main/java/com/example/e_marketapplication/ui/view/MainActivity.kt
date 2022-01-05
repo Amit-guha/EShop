@@ -9,8 +9,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.e_marketapplication.R
 import com.example.e_marketapplication.data.repository.MainRepository
+import com.example.e_marketapplication.ui.adapter.ProductAdapter2
+import com.example.emartket.data.model.PostProductsItem
 import com.example.emartket.ui.viewmodel.MainViewModel
 import com.example.emartket.ui.viewmodel.MainViewModelFactory
 import java.time.LocalTime
@@ -26,6 +30,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvopening: TextView
     private lateinit var tvClosing: TextView
     private lateinit var ratingBar: RatingBar
+
+    //Second Api call
+    private lateinit var productAdapter2: ProductAdapter2
+    private lateinit var recyclerView: RecyclerView
+
+    val list = arrayListOf<PostProductsItem>()
+    val listquantity = ArrayList<String>()
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -46,6 +57,20 @@ class MainActivity : AppCompatActivity() {
         SetupUI()
         SetuPViewModel()
         SetupFirstAPICall()
+        SetupRecylerview()
+        SetupSecondAPICall()
+
+    }
+
+    private fun SetupRecylerview() {
+        recyclerView = findViewById(R.id.recycler_item)
+        productAdapter2 = ProductAdapter2()
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = productAdapter2
+    }
+
+    private fun SetupSecondAPICall() {
 
     }
 
