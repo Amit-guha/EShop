@@ -44,30 +44,74 @@ class ProductShow : AppCompatActivity() {
 
         //Statusbar Cololr
         Statusebar()
+        SetupToolbar()
+        SetupIntent()
+        setupUI()
+        SetupRecyclerView()
+        SetUpViewModel()
+        setprice()
+        btnclicEvent()
 
 
+    }
+
+    private fun SetupToolbar() {
         //Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setTitleTextColor(resources.getColor(R.color.white))
+    }
 
-
+    private fun SetupIntent() {
         //Data from MainActivity
         selectedProduct = intent?.getParcelableArrayListExtra<PostProductsItem>("extra")
             ?: throw IllegalStateException("array list is null")
 
-         listquantity = intent?.getSerializableExtra("totalquantity") as ArrayList<String>
+        listquantity = intent?.getSerializableExtra("totalquantity") as ArrayList<String>
+    }
+
+    private fun btnclicEvent() {
+        //Take data from textinputlayout
+        val inputText = etDeliveryAd.editText?.text.toString()
+        val postItem = PostItem(selectedProduct, inputText)
+
+
+        btnSubmit.setOnClickListener {
+            progressbar.setVisibility(View.VISIBLE);
+            try {
+                viewModelSecond.pushPost(postItem)
+                viewModelSecond.myResponse3.observe(this, Observer { response ->
+                    if (response.isSuccessful) {
+
+                        Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show()
+                        progressbar.setVisibility(View.INVISIBLE)
+
+                        val responseString = "Response Code : ${response.code()}"
+                        "Name : ${response.body()?.delivery_address}"
+
+                        //set text if the request is successfull
+                        responseTv.setText(responseString)
+
+
+                    } else if (response.code() == 405) {
+                        Toast.makeText(this, "This page isn’t working", Toast.LENGTH_SHORT).show()
+                    } else {
+                        //set text if the request is Failed
+                        responseTv.setText("Error found is : ${response.code()}")
+                    }
+                })
+
+            } catch (e: Exception) {
+                //If any exception happened
+                Toast.makeText(this, "Exception : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
 
 
 
+        }
+    }
 
-        setupUI()
-        SetupRecyclerView()
-        SetUpViewModel()
-
-
-        //Button click Event
-
+    private fun setprice() {
         var totalprice: Int = 0
         for (i in 0 until selectedProduct.size) {
             totalprice += selectedProduct.get(i).price.toInt()
@@ -75,48 +119,6 @@ class ProductShow : AppCompatActivity() {
         }
 
         TvTaka.setText(totalprice.toString())
-        //Take data from textinputlayout
-        val inputText = etDeliveryAd.editText?.text.toString()
-
-        // Toast.makeText(this, "$totalprice", Toast.LENGTH_SHORT).show()
-        // Toast.makeText(this,"$myValue1 $myValue2 $myValue3",Toast.LENGTH_SHORT).show()
-
-        //called postItem
-
-        val postItem = PostItem(selectedProduct, inputText)
-
-
-        btnSubmit.setOnClickListener {
-
-            progressbar.setVisibility(View.VISIBLE);
-
-            try {
-                viewModelSecond.pushPost(postItem)
-                viewModelSecond.myResponse3.observe(this, Observer { response ->
-                    if (response.isSuccessful) {
-                        Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show()
-                        progressbar.setVisibility(View.INVISIBLE)
-
-                        val responseString = "Response Code : ${response.code()}"
-                        "Name : ${response.body()?.delivery_address}"
-
-                        responseTv.setText(responseString)
-
-                    } else if (response.code() == 405) {
-                        Toast.makeText(this, "This page isn’t working", Toast.LENGTH_SHORT).show()
-                    } else {
-                        responseTv.setText("Error found is : ${response.code()}")
-                    }
-                })
-
-            } catch (e: Exception) {
-                Toast.makeText(this, "Exception : ${e.message}", Toast.LENGTH_SHORT).show()
-
-            }
-
-
-        }
-
     }
 
     private fun SetUpViewModel() {
