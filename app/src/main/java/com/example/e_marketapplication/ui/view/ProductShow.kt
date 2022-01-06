@@ -62,6 +62,8 @@ class ProductShow : AppCompatActivity() {
         toolbar.setTitleTextColor(resources.getColor(R.color.white))
         toolbar.setTitle("Order summary screen")
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.arrow)
 
     }
 
