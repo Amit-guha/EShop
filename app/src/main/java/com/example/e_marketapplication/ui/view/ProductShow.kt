@@ -82,8 +82,6 @@ class ProductShow : AppCompatActivity() {
 
 
         btnSubmit.setOnClickListener {
-            val intent = Intent(this,SuccessfulScreen::class.java)
-            startActivity(intent)
 
             progressbar.setVisibility(View.VISIBLE);
             try {
@@ -99,6 +97,10 @@ class ProductShow : AppCompatActivity() {
 
                         //set text if the request is successfull
                         responseTv.setText(responseString)
+
+                        val intent = Intent(this,SuccessfulScreen::class.java)
+                        startActivity(intent)
+
 
 
                     } else if (response.code() == 405) {
